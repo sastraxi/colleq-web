@@ -5,6 +5,9 @@
   import { queryStore, gql } from '@urql/svelte'
 
   import ArrowRight from 'carbon-icons-svelte/lib/ArrowRight.svelte'
+  import Add from 'carbon-icons-svelte/lib/Add.svelte'
+  import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte'
+
   import Root from '../../layout/root.svelte'
   import List from '../../layout/List.svelte'
 
@@ -87,10 +90,12 @@
                 <Button
                   size="small"
                   kind={isSelected(repo) ? 'danger' : 'secondary'}
+                  icon={isSelected(repo) ? TrashCan : Add}
+                  iconDescription={isSelected(repo)
+                    ? `Remove ${repo.owner}/${repo.name}`
+                    : `Add ${repo.owner}/${repo.name}`}
                   on:click={() => toggle(repo)}
-                >
-                  {isSelected(repo) ? 'Remove' : 'Add'}
-                </Button>
+                />
               </RepositoryLine>
             {/each}
           {/key}
@@ -102,7 +107,13 @@
       <List>
         {#each $repositories as repo}
           <RepositoryLine repository={repo}>
-            <Button size="small" kind="danger" on:click={() => toggle(repo)}>Remove</Button>
+            <Button
+              size="small"
+              kind="danger"
+              icon={TrashCan}
+              iconDescription={`Remove ${repo.owner}/${repo.name}`}
+              on:click={() => toggle(repo)}
+            />
           </RepositoryLine>
         {/each}
       </List>
