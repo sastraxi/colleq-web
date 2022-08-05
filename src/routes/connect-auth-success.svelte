@@ -1,12 +1,20 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+  import { onMount } from 'svelte'
 
-  import { currentProvider, awaitingProviders, connectedProviders, type Provider } from './init/stores'
+  import {
+    currentProvider,
+    accessTokens,
+    awaitingProviders,
+    connectedProviders
+  } from './init/stores'
   import { page } from '$app/stores'
   import { goto } from '$app/navigation'
+  import type { Provider } from '../types'
 
   onMount(() => {
+    // N.B. we are receiving a response here from colleq/elefant's grant flow
     const providerParam = $page.url.searchParams.get('provider')
+    const accessToken = $page.url.searchParams.get('accessToken')
 
     // we are here as part of an init/ auth flow, redirect to the correct next step
     if (providerParam) {
@@ -16,8 +24,11 @@
       } else {
         console.log(`Got expected provider: ${provider}`)
         // record this provider as connected
-        $awaitingProviders = $awaitingProviders.filter(x => x !== provider)
-        $connectedProviders = [...$connectedProviders, provider]
+        $awaitingProviders = $awaitingProviders.filter((x) => x !== provider)
+        $connectedProviders = $connectedProviders.includes(provider)
+          ? $connectedProviders
+          : [...$connectedProviders, provider]
+        $accessTokens = { ...$accessTokens, [provider]: accessToken }
         $currentProvider = provider
         return goto('/init/choose-repositories')
       }
@@ -27,6 +38,4 @@
   })
 </script>
 
-<div>
-  Checking auth...
-</div>
+<div>Checking auth...</div>

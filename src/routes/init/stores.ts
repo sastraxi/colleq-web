@@ -1,13 +1,5 @@
 import { persistent } from '@furudean/svelte-persistent-store';
-import { writable } from 'svelte/store';
-
-export type Provider = 'github' | 'gitlab' | 'bitbucket';
-
-export type Repository = {
-  origin: Provider
-  owner: string
-  name: string
-}
+import type { Provider, Repository } from '../../types';
 
 export const workspaceName = persistent<string | null>({
   start_value: null,
@@ -29,12 +21,21 @@ export const connectedProviders = persistent<Array<Provider>>({
 
 /**
  * The provider we are currently choosing repostiories for.
- * We don't need to persist this (maybe we should anyway...)
  */
-export const currentProvider = writable<Provider | null>(null)
+export const currentProvider = persistent<Provider | null>({
+  start_value: null,
+  key: 'currentProvider',
+  storage_type: 'localStorage',
+})
 
 export const repositories = persistent<Array<Repository>>({
   start_value: [],
   key: 'repositories',
+  storage_type: 'localStorage',
+})
+
+export const accessTokens = persistent<Partial<Record<Provider, string>>>({
+  start_value: {},
+  key: 'accessTokens',
   storage_type: 'localStorage',
 })

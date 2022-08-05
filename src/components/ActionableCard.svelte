@@ -1,10 +1,12 @@
 <script lang="ts">
   import { Button } from 'carbon-components-svelte'
+import type { ButtonProps } from 'carbon-components-svelte/types/Button/Button.svelte';
   import NextOutline from 'carbon-icons-svelte/lib/NextOutline.svelte'
   import { createEventDispatcher } from 'svelte'
 
   export let title: string
   export let actionText: string = 'Select'
+  export let actionKind: ButtonProps['kind'] = 'secondary'
 
   const dispatch = createEventDispatcher()
 
@@ -18,7 +20,7 @@
   </div>
   <slot />
   <div class="spacer" />
-  <Button size="small" kind="secondary" on:click={onClick}>
+  <Button size="small" kind={actionKind} on:click={onClick}>
     {actionText}
   </Button>
 </div>
