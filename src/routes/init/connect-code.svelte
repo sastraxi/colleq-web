@@ -14,7 +14,7 @@
   import { goto } from '$app/navigation'
 
   const startAuth = (provider: Provider) => {
-    // TODO: serialize store state to localStorage
+    $awaitingProviders = [...$awaitingProviders, provider]
     goto(`${import.meta.env.VITE_AUTH_URL}/${provider}`)
   }
 </script>
