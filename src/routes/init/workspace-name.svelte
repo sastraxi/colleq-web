@@ -26,7 +26,7 @@
   <h1>Name your workspace</h1>
   <div>
     <TextInput value={name} />
-    <Button size="small" icon={Reset} on:click={regenerateName} />
+    <Button size="field" icon={Reset} on:click={regenerateName} />
     <i>
       <!-- <Checkmark size={32} /> -->
       <Loading withOverlay={false} small active={false} />
@@ -40,13 +40,10 @@
   div {
     display: flex;
     flex-direction: row;
-    align-items: stretch;
+    align-items: center;
   }
 
   i {
     margin-left: 1em;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
   }
 </style>
