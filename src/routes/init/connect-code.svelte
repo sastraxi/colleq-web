@@ -1,22 +1,22 @@
 <script lang="ts">
-  import 'carbon-components-svelte/css/white.css';
-  import { Loading, Button, TextInput } from 'carbon-components-svelte';
-  import LogoGithub from 'carbon-icons-svelte/lib/LogoGithub.svelte';
-  import Checkmark from 'carbon-icons-svelte/lib/Checkmark.svelte';
-  import NextFilled from 'carbon-icons-svelte/lib/NextFilled.svelte';
+  import 'carbon-components-svelte/css/white.css'
+  import { Loading, Button, TextInput } from 'carbon-components-svelte'
+  import LogoGithub from 'carbon-icons-svelte/lib/LogoGithub.svelte'
+  import Checkmark from 'carbon-icons-svelte/lib/Checkmark.svelte'
+  import NextFilled from 'carbon-icons-svelte/lib/NextFilled.svelte'
 
-  import Root from '../../layout/root.svelte';
-  import Cards from '../../layout/Cards.svelte';
-  import ActionableCard from '../../components/ActionableCard.svelte';
+  import Root from '../../layout/root.svelte'
+  import Cards from '../../layout/Cards.svelte'
+  import ActionableCard from '../../components/ActionableCard.svelte'
 
-  import { workspaceName, connectedProviders, type Provider } from './stores';
+  import { workspaceName, connectedProviders, awaitingProviders, type Provider } from './stores'
 
-  import { goto } from '$app/navigation';
+  import { goto } from '$app/navigation'
 
   const startAuth = (provider: Provider) => {
     // TODO: serialize store state to localStorage
-    goto(`${import.meta.env.VITE_AUTH_URL}/${provider}`);
-  };
+    goto(`${import.meta.env.VITE_AUTH_URL}/${provider}`)
+  }
 </script>
 
 <Root>

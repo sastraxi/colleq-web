@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { Button } from 'carbon-components-svelte';
-  import NextOutline from "carbon-icons-svelte/lib/NextOutline.svelte";
-  import { createEventDispatcher } from 'svelte';
+  import { Button } from 'carbon-components-svelte'
+  import NextOutline from 'carbon-icons-svelte/lib/NextOutline.svelte'
+  import { createEventDispatcher } from 'svelte'
 
-	export let title: string;
-  export let actionText: string = "Select"
+  export let title: string
+  export let actionText: string = 'Select'
 
-  const dispatch = createEventDispatcher();
+  const dispatch = createEventDispatcher()
 
   const onClick = () => dispatch('click')
 </script>

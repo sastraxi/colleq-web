@@ -1,25 +1,25 @@
 <script lang="ts">
-  import 'carbon-components-svelte/css/white.css';
-  import { Loading, Button, TextInput } from 'carbon-components-svelte';
-  import Reset from 'carbon-icons-svelte/lib/Reset.svelte';
-  import Checkmark from 'carbon-icons-svelte/lib/Checkmark.svelte';
-  import NextFilled from 'carbon-icons-svelte/lib/NextFilled.svelte';
-  import Root from '../../layout/root.svelte';
+  import 'carbon-components-svelte/css/white.css'
+  import { Loading, Button, TextInput } from 'carbon-components-svelte'
+  import Reset from 'carbon-icons-svelte/lib/Reset.svelte'
+  import Checkmark from 'carbon-icons-svelte/lib/Checkmark.svelte'
+  import NextFilled from 'carbon-icons-svelte/lib/NextFilled.svelte'
+  import Root from '../../layout/root.svelte'
 
-  import { goto } from '$app/navigation';
+  import { goto } from '$app/navigation'
 
-  import { workspaceName } from './stores';
-  import generateName from '../../generate-name';
+  import { workspaceName } from './stores'
+  import generateName from '../../generate-name'
 
-  let name = generateName();
+  let name = generateName()
   const regenerateName = () => {
-    name = generateName();
-  };
+    name = generateName()
+  }
 
   const onContinue = () => {
     $workspaceName = name
-    goto('./connect-code');
-  };
+    goto('./connect-code')
+  }
 </script>
 
 <Root>

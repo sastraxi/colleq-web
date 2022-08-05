@@ -3,6 +3,6 @@
     return {
       status: 302,
       redirect: '/init/workspace-name'
-    };
+    }
   }
 </script>

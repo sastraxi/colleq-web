@@ -32,5 +32,8 @@
 		"typescript": "^4.7.4",
 		"vite": "^3.0.0"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@furudean/svelte-persistent-store": "^0.8.0"
+	}
 }
