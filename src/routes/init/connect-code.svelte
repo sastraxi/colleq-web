@@ -9,19 +9,13 @@
   import Cards from '../../layout/Cards.svelte';
   import ActionableCard from '../../components/ActionableCard.svelte';
 
-  import { workspaceName, connectedProviders } from './stores';
+  import { workspaceName, connectedProviders, type Provider } from './stores';
 
   import { goto } from '$app/navigation';
 
-  const githubAuth = () => {
+  const startAuth = (provider: Provider) => {
     // TODO: serialize store state to localStorage
-    const params = new URLSearchParams({
-      client_id: '5f04fa393283e9aff4a0',
-      // redirect_uri: 'localhost:5173',
-      redirect_uri: 'https://colleq-dev.firebaseapp.com/__/auth/handler',
-      scope: ['user:email', 'repo', 'read:org', 'write:discussion'].join(' ')
-    });
-    goto(`https://github.com/login/oauth/authorize?${params.toString()}`);
+    goto(`${import.meta.env.VITE_AUTH_URL}/${provider}`);
   };
 </script>
 
@@ -32,7 +26,7 @@
     connected; select your source control provider below to get started.
   </p>
   <Cards>
-    <ActionableCard title="Github" actionText="Connect" on:click={githubAuth}>
+    <ActionableCard title="Github" actionText="Connect" on:click={() => startAuth('github')}>
       <LogoGithub size={24} slot="icon" />
     </ActionableCard>
   </Cards>
