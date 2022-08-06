@@ -71,7 +71,7 @@
     <h1>Choose repositories</h1>
     <div class="spacer" />
     {#if $repositories.length > 0}
-      <Button icon={ArrowRight}>Continue</Button>
+      <Button icon={ArrowRight} href="/init/connect-code">Continue</Button>
     {/if}
   </div>
 

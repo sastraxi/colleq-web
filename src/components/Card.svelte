@@ -5,8 +5,6 @@ import type { ButtonProps } from 'carbon-components-svelte/types/Button/Button.s
   import { createEventDispatcher } from 'svelte'
 
   export let title: string
-  export let actionText: string = 'Select'
-  export let actionKind: ButtonProps['kind'] = 'secondary'
 
   const dispatch = createEventDispatcher()
 
@@ -19,10 +17,10 @@ import type { ButtonProps } from 'carbon-components-svelte/types/Button/Button.s
     <slot name="icon" />
   </div>
   <slot />
-  <div class="spacer" />
-  <Button size="small" kind={actionKind} on:click={onClick}>
-    {actionText}
-  </Button>
+  {#if $$slots.action}
+    <div class="spacer" />
+    <slot name="action" />
+  {/if}
 </div>
 
 <style>
