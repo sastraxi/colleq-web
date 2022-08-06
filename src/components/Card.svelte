@@ -49,5 +49,6 @@ import type { ButtonProps } from 'carbon-components-svelte/types/Button/Button.s
 
   .spacer {
     margin-top: 1rem;
+    flex: 1
   }
 </style>
