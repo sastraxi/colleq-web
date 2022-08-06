@@ -33,28 +33,28 @@
       <p class="description">
         Pull Requests let you discuss and review potential changes with collaborators before code is merged into the base branch.
       </p>
-      <Button size="small" slot="action">Connect</Button>
+      <Button size="small" slot="action" disabled={true}>Connect</Button>
     </Card>
     <Card title="Github Issues">
       <LogoGithub size={24} slot="icon" />
       <p class="description">
         Issues let you track your work on GitHub, where development happens. 
       </p>
-      <Button size="small" slot="action">Connect</Button>
+      <Button size="small" slot="action" disabled={true}>Connect</Button>
     </Card>
     <Card title="Slack">
       <LogoSlack size={24} slot="icon" />
       <p class="description">
         See conversations that reference code via URLs embedded in messages.
       </p>
-      <Button size="small" slot="action">Connect</Button>
+      <Button size="small" slot="action" disabled={true}>Connect</Button>
     </Card>
     <Card title="Discord">
       <LogoDiscord size={24} slot="icon" />
       <p class="description">
         See conversations that reference code via URLs embedded in messages.
       </p>
-      <Button size="small" slot="action">Connect</Button>
+      <Button size="small" slot="action" disabled={true}>Connect</Button>
     </Card>
   </Cards>
 </Root>
