@@ -5,11 +5,14 @@
     currentProvider,
     accessTokens,
     awaitingProviders,
-    connectedProviders
+    connectedProviders,
+    workspaceId,
+    workspaceSlug,
   } from './init/stores'
   import { page } from '$app/stores'
   import { goto } from '$app/navigation'
   import type { Provider } from '../types'
+import { gql, queryStore } from '@urql/svelte';
 
   onMount(() => {
     // N.B. we are receiving a response here from colleq/elefant's grant flow
@@ -22,7 +25,6 @@
       if (!$awaitingProviders.includes(provider)) {
         console.error(`Was not expecting provider: ${provider}`)
       } else {
-        console.log(`Got expected provider: ${provider}`)
         // record this provider as connected
         $awaitingProviders = $awaitingProviders.filter((x) => x !== provider)
         $connectedProviders = $connectedProviders.includes(provider)
@@ -30,6 +32,25 @@
           : [...$connectedProviders, provider]
         $accessTokens = { ...$accessTokens, [provider]: accessToken }
         $currentProvider = provider
+
+        // create the workspace
+        // TODO: auto-generate, this sucks
+        if (!$workspaceId) {
+          const repoQuery = queryStore({
+            client: createHasuraClient(),
+            query: gql`
+              mutation CreateWorkspace($slug: String!) {
+                createWorkspaceOne({
+                  object: {
+                    slug: $slug
+                  }
+                })
+              }
+            `
+          })
+        }
+
+        // next step of onboarding
         return goto('/init/choose-repositories')
       }
     }
