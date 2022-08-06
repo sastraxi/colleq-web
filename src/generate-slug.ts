@@ -48,8 +48,8 @@ const CHARS = "abcdefghijklmnopqrstuvxwyz0123456789"
 const randomChars = (length: number, chars = CHARS) =>
   [...Array(length).keys()].map(() => chooseStr(chars)).join('')
 
-const generateName = (randomCharsLength = 4) => {
+const generateSlug = (randomCharsLength = 4) => {
   return `${choose(adjectives)}-${choose(nouns)}-${randomChars(randomCharsLength)}`
 }
 
-export default generateName
+export default generateSlug

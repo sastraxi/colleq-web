@@ -1,9 +1,9 @@
 import { persistent } from '@furudean/svelte-persistent-store';
 import type { Provider, Repository } from '../../types';
 
-export const workspaceName = persistent<string | null>({
+export const workspaceSlug = persistent<string | null>({
   start_value: null,
-  key: 'workspaceName',
+  key: 'workspaceSlug',
   storage_type: 'localStorage',
 })
 

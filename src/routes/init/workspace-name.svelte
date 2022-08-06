@@ -8,16 +8,16 @@
 
   import { goto } from '$app/navigation'
 
-  import { workspaceName } from './stores'
-  import generateName from '../../generate-name'
+  import { workspaceSlug } from './stores'
+  import generateSlug from '../../generate-slug'
 
-  let name = generateName()
-  const regenerateName = () => {
-    name = generateName()
+  let name = generateSlug()
+  const regenerate = () => {
+    name = generateSlug()
   }
 
   const onContinue = () => {
-    $workspaceName = name
+    $workspaceSlug = name
     goto('./connect-code')
   }
 </script>
@@ -26,7 +26,7 @@
   <h1>Name your workspace</h1>
   <div>
     <TextInput value={name} />
-    <Button size="field" icon={Reset} on:click={regenerateName} />
+    <Button size="field" icon={Reset} on:click={regenerate} />
     <i>
       <!-- <Checkmark size={32} /> -->
       <Loading withOverlay={false} small active={false} />

@@ -11,7 +11,7 @@
   import Cards from '../../layout/Cards.svelte'
   import Card from '../../components/Card.svelte'
 
-  import { workspaceName, connectedProviders, awaitingProviders, repositories } from './stores'
+  import { workspaceSlug, connectedProviders, awaitingProviders, repositories } from './stores'
 
   import { goto } from '$app/navigation'
   import type { Provider } from '../../types'
@@ -27,7 +27,7 @@
 <Root>
   <h1>Connect your code</h1>
   <p>
-    Looks like you named your workspace <b>{$workspaceName}</b>. Let's get your git repositories
+    Looks like you named your workspace <b>{$workspaceSlug}</b>. Let's get your git repositories
     connected; select your source control provider below to get started.
   </p>
   <Cards>
@@ -37,7 +37,7 @@
         The complete developer platform to build, scale, and deliver secure software.
       </p>
       <svelte:fragment slot="action">
-        {#if numReposByProvider['github'] === 0}
+        {#if !numReposByProvider['github']}
           <Button size="small" kind="secondary" on:click={() => startAuth('github')}>Connect</Button
           >
         {:else}
