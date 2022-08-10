@@ -7,3 +7,8 @@ export const createGithubClient = (accessToken: string) =>
       headers: { authorization: `Bearer ${accessToken}` },
     }),
   });
+
+export const createHasuraClient = () =>
+  createClient({
+    url: 'https://localhost:8080/v1/graphql',
+  });

@@ -12,7 +12,17 @@
   import { page } from '$app/stores'
   import { goto } from '$app/navigation'
   import type { Provider } from '../types'
-import { gql, queryStore } from '@urql/svelte';
+  import { gql, mutationStore, queryStore } from '@urql/svelte';
+  import { createHasuraClient } from 'src/client';
+  import { CreateWorkspaceDocument } from 'src/graphql-operations';
+
+  const createWorkspace = (slug: string) => {
+    return mutationStore({
+      client: createHasuraClient(),
+      query: CreateWorkspaceDocument,
+      variables: { slug },
+    })
+  }
 
   onMount(() => {
     // N.B. we are receiving a response here from colleq/elefant's grant flow
@@ -35,18 +45,11 @@ import { gql, queryStore } from '@urql/svelte';
 
         // create the workspace
         // TODO: auto-generate, this sucks
-        if (!$workspaceId) {
-          const repoQuery = queryStore({
-            client: createHasuraClient(),
-            query: gql`
-              mutation CreateWorkspace($slug: String!) {
-                createWorkspaceOne({
-                  object: {
-                    slug: $slug
-                  }
-                })
-              }
-            `
+        if (!$workspaceId && $workspaceSlug) {
+          createWorkspace($workspaceSlug).then(x => {
+            // FIXME: you don't understand this paradigm enough
+            // read https://stackblitz.com/edit/vitejs-vite-2ssvxj?file=src%2Fgraphql%2Fschema.json
+            // then come back
           })
         }
 
