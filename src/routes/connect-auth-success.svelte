@@ -17,6 +17,8 @@
 
   const client = createHasuraClient()
 
+  // TODO: understand how to use @urql/svelte
+  // see https://stackblitz.com/edit/vitejs-vite-2ssvxj?file=src%2Fstores%2Fclient.ts
   const createWorkspace = (slug: string): Promise<number> =>
     client
       .mutation(CreateWorkspaceDocument, { slug })
