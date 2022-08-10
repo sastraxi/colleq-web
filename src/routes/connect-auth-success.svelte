@@ -7,22 +7,25 @@
     awaitingProviders,
     connectedProviders,
     workspaceId,
-    workspaceSlug,
+    workspaceSlug
   } from './init/stores'
   import { page } from '$app/stores'
   import { goto } from '$app/navigation'
   import type { Provider } from '../types'
-  import { gql, mutationStore, queryStore } from '@urql/svelte';
-  import { createHasuraClient } from 'src/client';
-  import { CreateWorkspaceDocument } from 'src/graphql-operations';
+  import { gql, mutationStore, queryStore } from '@urql/svelte'
+  import { createHasuraClient } from 'src/client'
+  import { CreateWorkspaceDocument, type CreateWorkspaceMutation } from 'src/graphql-operations'
+  import type { OperationResultStore } from '@urql/svelte/dist/types/common'
 
-  const createWorkspace = (slug: string) => {
-    return mutationStore({
-      client: createHasuraClient(),
-      query: CreateWorkspaceDocument,
-      variables: { slug },
-    })
-  }
+  const client = createHasuraClient()
+  const createWorkspace = (slug: string): Promise<number> =>
+    client.mutation(CreateWorkspaceDocument, { slug })
+      .toPromise()
+      .then((result) => {
+        const { data, error } = result
+        if (error) throw error;
+        return data?.insertWorkspaceOne?.id!
+      })
 
   onMount(() => {
     // N.B. we are receiving a response here from colleq/elefant's grant flow
@@ -43,18 +46,16 @@
         $accessTokens = { ...$accessTokens, [provider]: accessToken }
         $currentProvider = provider
 
-        // create the workspace
-        // TODO: auto-generate, this sucks
+        // init: create the workspace
         if (!$workspaceId && $workspaceSlug) {
-          createWorkspace($workspaceSlug).then(x => {
-            // FIXME: you don't understand this paradigm enough
-            // read https://stackblitz.com/edit/vitejs-vite-2ssvxj?file=src%2Fgraphql%2Fschema.json
-            // then come back
+          return createWorkspace($workspaceSlug).then((id) => {
+            $workspaceId = id
+            return goto('/init/choose-repositories')
           })
         }
 
-        // next step of onboarding
-        return goto('/init/choose-repositories')
+        // anywhere else: I'm not sure!
+        return goto('/whoknows')
       }
     }
 
