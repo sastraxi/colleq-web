@@ -12,18 +12,18 @@
   import { page } from '$app/stores'
   import { goto } from '$app/navigation'
   import type { Provider } from '../types'
-  import { gql, mutationStore, queryStore } from '@urql/svelte'
   import { createHasuraClient } from 'src/client'
-  import { CreateWorkspaceDocument, type CreateWorkspaceMutation } from 'src/graphql-operations'
-  import type { OperationResultStore } from '@urql/svelte/dist/types/common'
+  import { CreateWorkspaceDocument } from 'src/graphql-operations'
 
   const client = createHasuraClient()
+
   const createWorkspace = (slug: string): Promise<number> =>
-    client.mutation(CreateWorkspaceDocument, { slug })
+    client
+      .mutation(CreateWorkspaceDocument, { slug })
       .toPromise()
       .then((result) => {
         const { data, error } = result
-        if (error) throw error;
+        if (error) throw error
         return data?.insertWorkspaceOne?.id!
       })
 
