@@ -10,5 +10,8 @@ export const createGithubClient = (accessToken: string) =>
 
 export const createHasuraClient = () =>
   createClient({
-    url: 'https://localhost:8080/v1/graphql',
+    url: 'http://localhost:8080/v1/graphql',
+    fetchOptions: {
+      credentials: 'include',
+    }
   });

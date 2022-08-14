@@ -12,8 +12,8 @@
   import { page } from '$app/stores'
   import { goto } from '$app/navigation'
   import type { Provider } from '../types'
-  import { createHasuraClient } from 'src/client'
-  import { CreateWorkspaceDocument } from 'src/graphql-operations'
+  import { createHasuraClient } from '../client'
+  import { CreateWorkspaceDocument } from '../graphql-operations'
 
   const client = createHasuraClient()
 
@@ -39,26 +39,26 @@
       const provider = providerParam as Provider
       if (!$awaitingProviders.includes(provider)) {
         console.error(`Was not expecting provider: ${provider}`)
-      } else {
-        // record this provider as connected
-        $awaitingProviders = $awaitingProviders.filter((x) => x !== provider)
-        $connectedProviders = $connectedProviders.includes(provider)
-          ? $connectedProviders
-          : [...$connectedProviders, provider]
-        $accessTokens = { ...$accessTokens, [provider]: accessToken }
-        $currentProvider = provider
-
-        // init: create the workspace
-        if (!$workspaceId && $workspaceSlug) {
-          return createWorkspace($workspaceSlug).then((id) => {
-            $workspaceId = id
-            return goto('/init/choose-repositories')
-          })
-        }
-
-        // anywhere else: I'm not sure!
-        return goto('/whoknows')
       }
+
+      // record this provider as connected
+      $awaitingProviders = $awaitingProviders.filter((x) => x !== provider)
+      $connectedProviders = $connectedProviders.includes(provider)
+        ? $connectedProviders
+        : [...$connectedProviders, provider]
+      $accessTokens = { ...$accessTokens, [provider]: accessToken }
+      $currentProvider = provider      
+
+      // init: create the workspace
+      if (!$workspaceId && $workspaceSlug) {
+        return createWorkspace($workspaceSlug).then((id) => {
+          $workspaceId = id
+          return goto('/init/choose-repositories')
+        })
+      }
+
+      // anywhere else: I'm not sure!
+      return goto('/whoknows')
     }
 
     return goto('/')

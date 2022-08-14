@@ -6742,6 +6742,7 @@ export type Mutation_RootImportRepoArgs = {
   name: Scalars['String']
   origin: Scalars['String']
   owner: Scalars['String']
+  workspaceId: Scalars['Int']
 }
 
 /** mutation root */
@@ -8191,6 +8192,7 @@ export type CreateRepoMutationVariables = Exact<{
   origin: Scalars['source_kind']
   owner: Scalars['String']
   name: Scalars['String']
+  workspaceId: Scalars['Int']
 }>
 
 export type CreateRepoMutation = {
@@ -8422,6 +8424,17 @@ export const CreateRepoDocument = {
             },
           },
         },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'workspaceId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
       ],
       selectionSet: {
         kind: 'SelectionSet',
@@ -8458,6 +8471,35 @@ export const CreateRepoDocument = {
                       value: {
                         kind: 'Variable',
                         name: { kind: 'Name', value: 'name' },
+                      },
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'workspace_repos' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'data' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'workspaceId' },
+                                  value: {
+                                    kind: 'Variable',
+                                    name: {
+                                      kind: 'Name',
+                                      value: 'workspaceId',
+                                    },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
                       },
                     },
                   ],
@@ -8537,6 +8579,29 @@ export const CreateWorkspaceDocument = {
                       value: {
                         kind: 'Variable',
                         name: { kind: 'Name', value: 'slug' },
+                      },
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'members' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'data' },
+                            value: {
+                              kind: 'ObjectValue',
+                              fields: [
+                                {
+                                  kind: 'ObjectField',
+                                  name: { kind: 'Name', value: 'isAdmin' },
+                                  value: { kind: 'BooleanValue', value: true },
+                                },
+                              ],
+                            },
+                          },
+                        ],
                       },
                     },
                   ],

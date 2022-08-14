@@ -11,11 +11,12 @@
   import Root from '../../layout/root.svelte'
   import List from '../../layout/List.svelte'
 
-  import { repositories, currentProvider, accessTokens } from './stores'
+  import { repositories, currentProvider, accessTokens, workspaceId } from './stores'
   import { createGithubClient } from '../../client'
 
   import type { Repository } from '../../types'
   import RepositoryLine from '../../components/RepositoryLine.svelte'
+  import { goto } from '$app/navigation'
 
   type GithubRepoNode = {
     nameWithOwner: string
@@ -63,6 +64,11 @@
     }
   }
 
+  const onContinue = () => {
+    console.log(`need to add repos to ${$workspaceId}`, $repositories)
+    goto('/init/connect-code')
+  }
+
   $: searchResults = $repoQuery.data?.viewer.repositories.nodes.map(repositoryFromGithub)
 </script>
 
@@ -71,7 +77,7 @@
     <h1>Choose repositories</h1>
     <div class="spacer" />
     {#if $repositories.length > 0}
-      <Button icon={ArrowRight} href="/init/connect-code">Continue</Button>
+      <Button icon={ArrowRight} on:click={onContinue}>Continue</Button>
     {/if}
   </div>
 
