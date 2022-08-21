@@ -11,6 +11,10 @@
   import Card from '../../components/Card.svelte'
 
   import { goto } from '$app/navigation'
+
+  const configureSource = (sourceKind: string) => {
+    goto(`/init/source/${sourceKind.replaceAll(' ', '-')}/new`)
+  }
 </script>
 
 <Root>
@@ -26,19 +30,22 @@
         GitHub Discussions is a collaborative communication forum for the community around an open
         source or internal project.
       </p>
-      <Button size="small" slot="action">Connect</Button>
+      <Button size="small" slot="action" on:click={() => configureSource('github discussion')}
+        >Connect</Button
+      >
     </Card>
     <Card title="Github Pull Requests">
       <LogoGithub size={24} slot="icon" />
       <p class="description">
-        Pull Requests let you discuss and review potential changes with collaborators before code is merged into the base branch.
+        Pull Requests let you discuss and review potential changes with collaborators before code is
+        merged into the base branch.
       </p>
       <Button size="small" slot="action" disabled={true}>Connect</Button>
     </Card>
     <Card title="Github Issues">
       <LogoGithub size={24} slot="icon" />
       <p class="description">
-        Issues let you track your work on GitHub, where development happens. 
+        Issues let you track your work on GitHub, where development happens.
       </p>
       <Button size="small" slot="action" disabled={true}>Connect</Button>
     </Card>

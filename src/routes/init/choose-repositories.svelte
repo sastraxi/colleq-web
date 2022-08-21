@@ -1,7 +1,7 @@
 <script lang="ts">
   import 'carbon-components-svelte/css/white.css'
 
-  import { Loading, Button, TextInput } from 'carbon-components-svelte'
+  import { Button } from 'carbon-components-svelte'
   import { queryStore, gql } from '@urql/svelte'
 
   import ArrowRight from 'carbon-icons-svelte/lib/ArrowRight.svelte'
@@ -12,11 +12,12 @@
   import List from '../../layout/List.svelte'
 
   import { repositories, currentProvider, accessTokens, workspaceId } from './stores'
-  import { createGithubClient } from '../../client'
+  import { createGithubClient, createHasuraClient } from '../../client'
 
   import type { Repository } from '../../types'
   import RepositoryLine from '../../components/RepositoryLine.svelte'
   import { goto } from '$app/navigation'
+  import { ImportReposDocument } from '../../graphql-operations';
 
   type GithubRepoNode = {
     nameWithOwner: string
@@ -64,9 +65,18 @@
     }
   }
 
-  const onContinue = () => {
-    console.log(`need to add repos to ${$workspaceId}`, $repositories)
-    goto('/init/connect-code')
+  const onContinue = async () => {
+    const client = createHasuraClient()
+    const response = await client
+      .mutation(ImportReposDocument, {
+        workspaceId: $workspaceId!,
+        repos: $repositories
+       })
+      .toPromise()
+    console.log('importRepos: got back', response)
+    if (!response.error) {
+      goto('/init/connect-sources')
+    }
   }
 
   $: searchResults = $repoQuery.data?.viewer.repositories.nodes.map(repositoryFromGithub)

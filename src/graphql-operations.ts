@@ -1790,6 +1790,12 @@ export enum Cursorordering {
   Desc = 'DESC',
 }
 
+export type ExternalRepo = {
+  name: Scalars['String']
+  origin: Scalars['String']
+  owner: Scalars['String']
+}
+
 /** columns and relationships of "incoming_webhook" */
 export type IncomingWebhook = {
   __typename?: 'IncomingWebhook'
@@ -6445,8 +6451,8 @@ export type Mutation_Root = {
   deleteWorkspaceRepo?: Maybe<WorkspaceRepoMutationResponse>
   /** delete single row from the table: "workspace_repo" */
   deleteWorkspaceRepoByPk?: Maybe<WorkspaceRepo>
-  /** Import a repository (as an authenticated user) */
-  importRepo: Scalars['Int']
+  /** Import repositories into a workspace that you are an admin of. */
+  importRepos: Scalars['Int']
   /** insert data into the table: "author" */
   insertAuthor?: Maybe<AuthorMutationResponse>
   /** insert a single row into the table: "author" */
@@ -6738,10 +6744,8 @@ export type Mutation_RootDeleteWorkspaceRepoByPkArgs = {
 }
 
 /** mutation root */
-export type Mutation_RootImportRepoArgs = {
-  name: Scalars['String']
-  origin: Scalars['String']
-  owner: Scalars['String']
+export type Mutation_RootImportReposArgs = {
+  repos: Array<ExternalRepo>
   workspaceId: Scalars['Int']
 }
 
@@ -8219,6 +8223,26 @@ export type GetAccessTokenQuery = {
   credentials: Array<{ __typename?: 'Credentials'; accessToken: string }>
 }
 
+export type ImportReposMutationVariables = Exact<{
+  repos: Array<ExternalRepo> | ExternalRepo
+  workspaceId: Scalars['Int']
+}>
+
+export type ImportReposMutation = {
+  __typename?: 'mutation_root'
+  importRepos: number
+}
+
+export type IsWorkspaceAdminQueryVariables = Exact<{
+  userId: Scalars['Int']
+  workspaceId: Scalars['Int']
+}>
+
+export type IsWorkspaceAdminQuery = {
+  __typename?: 'query_root'
+  userWorkspace: Array<{ __typename?: 'UserWorkspace'; isAdmin: boolean }>
+}
+
 export type SignupViaProviderMutationVariables = Exact<{
   email: Scalars['String']
   username: Scalars['String']
@@ -8720,6 +8744,173 @@ export const GetAccessTokenDocument = {
     },
   ],
 } as unknown as DocumentNode<GetAccessTokenQuery, GetAccessTokenQueryVariables>
+export const ImportReposDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'ImportRepos' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'repos' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'ListType',
+              type: {
+                kind: 'NonNullType',
+                type: {
+                  kind: 'NamedType',
+                  name: { kind: 'Name', value: 'ExternalRepo' },
+                },
+              },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'workspaceId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'importRepos' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'repos' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'repos' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'workspaceId' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'workspaceId' },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ImportReposMutation, ImportReposMutationVariables>
+export const IsWorkspaceAdminDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'IsWorkspaceAdmin' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'userId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'workspaceId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'userWorkspace' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'userId' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: '_eq' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'userId' },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'workspaceId' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: '_eq' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'workspaceId' },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'isAdmin' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  IsWorkspaceAdminQuery,
+  IsWorkspaceAdminQueryVariables
+>
 export const SignupViaProviderDocument = {
   kind: 'Document',
   definitions: [
